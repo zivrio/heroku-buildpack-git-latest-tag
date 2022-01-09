@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+# bin/compile <build-dir> <cache-dir> <env-dir>
 
 # fail fast
 set -e
+
+echo "==> Buildpack - Get git latest tag"
 
 BUILD_DIR="$1"
 CACHE_DIR="$2"
