@@ -10,7 +10,7 @@ BUILD_DIR="$1"
 CACHE_DIR="$2"
 ENV_DIR="$3"
 PROFILE_PATH="$BUILD_DIR/.profile.d/app-version.sh"
-APP_VERSION=$(git describe --tags --abbrev=0)
+# APP_VERSION=$(git describe --tags --abbrev=0)
 
 create_env() {
   # populate profile.d
@@ -18,9 +18,12 @@ create_env() {
 }
 
 write_profile() {
-  echo "==> Writing APP_VERSION ($APP_VERSION) to $PROFILE_PATH"
-  echo "export APP_VERSION=\"$APP_VERSION\"" >> $PROFILE_PATH
-  export APP_VERSION=\${APP_VERSION}
+  echo "=====> Writing SOURCE_VERSION ($SOURCE_VERSION) to $PROFILE_PATH"
+  echo "export APP_VERSION=\"$SOURCE_VERSION\"" >> $PROFILE_PATH
+
+  # echo "==> Writing APP_VERSION ($APP_VERSION) to $PROFILE_PATH"
+  # echo "export APP_VERSION=\"$APP_VERSION\"" >> $PROFILE_PATH
+  # export APP_VERSION=\${APP_VERSION}
 }
 
 create_env
