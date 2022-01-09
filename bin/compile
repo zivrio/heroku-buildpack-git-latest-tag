@@ -18,6 +18,7 @@ create_env() {
 write_profile() {
   echo "==> Writing APP_VERSION ($APP_VERSION) to $PROFILE_PATH"
   echo "export APP_VERSION=\"$APP_VERSION\"" >> $PROFILE_PATH
+  export APP_VERSION=\${APP_VERSION}
 }
 
 create_env
