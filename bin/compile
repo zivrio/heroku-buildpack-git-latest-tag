@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# fail fast
+set -e
+
+BUILD_DIR="$1"
+CACHE_DIR="$2"
+ENV_DIR="$3"
+PROFILE_PATH="$BUILD_DIR/.profile.d/app-version.sh"
+
+version=$(git describe --tags --abbrev=0)
+
+create_env() {
+  # populate profile.d
+  mkdir -p $(dirname $PROFILE_PATH)
+}
+
+write_profile() {
+  echo "==> Writing version ($version) to $PROFILE_PATH"
+  echo "export APP_VERSION=\"$version\"" >> $PROFILE_PATH
+}
+
+create_env
+write_profile
+
+exit 0
