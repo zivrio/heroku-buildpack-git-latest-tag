@@ -31,7 +31,16 @@ write_tag_version_profile() {
   echo "export APP_VERSION=\"$APP_VERSION\"" >> $APP_PROFILE_PATH
 }
 
+write_tag_version_to_build_dir() {
+  echo $SOURCE_VERSION > $BUILD_DIR/.source_version
+  echo $APP_VERSION > $BUILD_DIR/.app_version
+}
+
+write_tag_version_to_build_dir
+
+
 create_env
+
 write_source_version_profile
 write_tag_version_profile
 
