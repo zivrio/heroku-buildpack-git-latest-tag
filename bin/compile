@@ -4,29 +4,35 @@
 # fail fast
 set -e
 
-echo "==> Buildpack - Get git latest tag"
+echo "==> Buildpack - Get latest git tag"
 
 BUILD_DIR="$1"
 CACHE_DIR="$2"
 ENV_DIR="$3"
-PROFILE_PATH="$BUILD_DIR/.profile.d/app-version.sh"
-# APP_VERSION=$(git describe --tags --abbrev=0)
+
+APP_VERSION=$(git describe --tags --abbrev=0)
+
+SOURCE_PROFILE_PATH="$BUILD_DIR/.profile.d/git-sha.sh"
+APP_PROFILE_PATH="$BUILD_DIR/.profile.d/app-version.sh"
 
 create_env() {
   # populate profile.d
-  mkdir -p $(dirname $PROFILE_PATH)
+  mkdir -p $(dirname $SOURCE_PROFILE_PATH)
+  mkdir -p $(dirname $APP_PROFILE_PATH)
 }
 
-write_profile() {
-  echo "=====> Writing SOURCE_VERSION ($SOURCE_VERSION) to $PROFILE_PATH"
-  echo "export APP_VERSION=\"$SOURCE_VERSION\"" >> $PROFILE_PATH
+write_source_version_profile() {
+  echo "=====> Writing SOURCE_VERSION ($SOURCE_VERSION) to $SOURCE_PROFILE_PATH"
+  echo "export GIT_SHA=\"$SOURCE_VERSION\"" >> $SOURCE_PROFILE_PATH
+}
 
-  # echo "==> Writing APP_VERSION ($APP_VERSION) to $PROFILE_PATH"
-  # echo "export APP_VERSION=\"$APP_VERSION\"" >> $PROFILE_PATH
-  # export APP_VERSION=\${APP_VERSION}
+write_tag_version_profile() {
+  echo "=====> Writing APP_VERSION ($APP_VERSION) to $APP_PROFILE_PATH"
+  echo "export APP_VERSION=\"$APP_VERSION\"" >> $APP_PROFILE_PATH
 }
 
 create_env
-write_profile
+write_source_version_profile
+write_tag_version_profile
 
 exit 0
