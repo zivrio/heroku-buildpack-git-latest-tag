@@ -15,10 +15,16 @@ APP_VERSION=$(git describe --tags --abbrev=0)
 SOURCE_PROFILE_PATH="$BUILD_DIR/.profile.d/git-sha.sh"
 APP_PROFILE_PATH="$BUILD_DIR/.profile.d/app-version.sh"
 
+SOURCE_ENV_PATH="$ENV_DIR/.profile.d/git-sha.sh"
+APP_ENV_PATH="$ENV_DIR/.profile.d/app-version.sh"
+
 create_env() {
   # populate profile.d
   mkdir -p $(dirname $SOURCE_PROFILE_PATH)
   mkdir -p $(dirname $APP_PROFILE_PATH)
+
+  mkdir -p $(dirname $SOURCE_ENV_PATH)
+  mkdir -p $(dirname $APP_ENV_PATH)
 }
 
 write_source_version_profile() {
@@ -32,16 +38,22 @@ write_tag_version_profile() {
 }
 
 write_tag_version_to_build_dir() {
-  echo $SOURCE_VERSION > $BUILD_DIR/.source_version
-  echo $APP_VERSION > $BUILD_DIR/.app_version
+  echo $SOURCE_VERSION > $SOURCE_PROFILE_PATH
+  echo $APP_VERSION > $APP_PROFILE_PATH
 }
 
-write_tag_version_to_build_dir
-
+write_tag_version_to_env_dir() {
+  echo $APP_VERSION > $APP_ENV_PATH
+  echo $SOURCE_VERSION > $SOURCE_ENV_PATH
+}
 
 create_env
 
+write_tag_version_to_build_dir
+write_tag_version_to_env_dir
+
 write_source_version_profile
 write_tag_version_profile
+
 
 exit 0
