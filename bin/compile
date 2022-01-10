@@ -27,9 +27,10 @@ create_env() {
   mkdir -p $(dirname $APP_ENV_PATH)
 }
 
+# AS ENV VAR
 write_source_version_profile() {
   echo "=====> Writing SOURCE_VERSION ($SOURCE_VERSION) to $SOURCE_PROFILE_PATH"
-  echo "export GIT_SHA=\"$SOURCE_VERSION\"" >> $SOURCE_PROFILE_PATH
+  echo "export SOURCE_VERSION=\"$SOURCE_VERSION\"" >> $SOURCE_PROFILE_PATH
 }
 
 write_tag_version_profile() {
@@ -37,20 +38,34 @@ write_tag_version_profile() {
   echo "export APP_VERSION=\"$APP_VERSION\"" >> $APP_PROFILE_PATH
 }
 
+write_source_version_envprofile() {
+  echo "=====> Writing SOURCE_VERSION ($SOURCE_VERSION) to $SOURCE_PROFILE_PATH"
+  echo "export SOURCE_VERSION=\"$SOURCE_VERSION\"" >> $SOURCE_PROFILE_PATH
+}
+
+write_tag_version_envprofile() {
+  echo "=====> Writing APP_VERSION ($APP_VERSION) to $APP_PROFILE_PATH"
+  echo "export APP_VERSION=\"$APP_VERSION\"" >> $APP_PROFILE_PATH
+}
+
+# AS FILE
 write_tag_version_to_build_dir() {
-  echo $SOURCE_VERSION > $SOURCE_PROFILE_PATH
-  echo $APP_VERSION > $APP_PROFILE_PATH
+  echo $SOURCE_VERSION >> "$BUILD_DIR/.source_version"
+  echo $APP_VERSION >> "$BUILD_DIR/.app_version"
 }
 
 write_tag_version_to_env_dir() {
-  echo $APP_VERSION > $APP_ENV_PATH
-  echo $SOURCE_VERSION > $SOURCE_ENV_PATH
+  echo $SOURCE_VERSION >> "$ENV_DIR/.source_version"
+  echo $APP_VERSION >> "$ENV_DIR/.app_version"
 }
 
 create_env
 
 write_tag_version_to_build_dir
 write_tag_version_to_env_dir
+
+write_source_version_envprofile
+write_tag_version_envprofile
 
 write_source_version_profile
 write_tag_version_profile
